@@ -2,7 +2,6 @@ import json
 from dataclasses import dataclass
 
 from flask import Flask, jsonify, redirect, request, url_for
-from werkzeug.datastructures.structures import ImmutableMultiDict
 
 app = Flask(__name__, static_folder=".", static_url_path="")
 
@@ -17,7 +16,7 @@ class TodoRecord:
         return json.dumps(self)
 
 
-def make_todo_record(form: ImmutableMultiDict[str, str]) -> TodoRecord:
+def make_todo_record(form) -> TodoRecord:
     return TodoRecord(form.get("checked", "") == "on", form.get("title", ""), form.get("description", ""))
 
 
@@ -33,7 +32,7 @@ def data2html(record: TodoRecord, id: int) -> str:
     """
 
 
-data: dict[int, TodoRecord] = {}
+data = {}
 
 
 @app.route("/")
